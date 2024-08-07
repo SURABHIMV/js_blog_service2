@@ -1,0 +1,125 @@
+{% load static %}
+
+<div class="modal fade" id="edit_blog_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="" method="post" class="login-form" id="blog_edit_form">
+            {% csrf_token %}
+            <input type="hidden" value="{{data.id}}" name="product_id">
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="name">Product Name</label>
+                  <input type="text" value="{{data.auther_name}}" name="product_name" class="form-control" id="name" placeholder="Product Name">
+                </div>
+
+                <div class="form-group">
+                  <label for="name">Date</label>
+                  <input type="date" value="{{data.date|date:"Y-m-d"}}" name="date" class="form-control" id="date" placeholder="date">
+                </div>
+
+                <div class="form-group">
+                  <label for="name">Title</label>
+                  
+                  <input type="text" value="{{data.title}}" name="title" class="form-control" id="title" placeholder="title">
+                </div>
+
+                <div class="form-group">
+                  <label for="name">Description</label>
+                  <input type="text" value="{{data.description}}" name="description" class="form-control" id="description" placeholder="description">
+                </div>
+
+                
+
+                <div class="form-group">
+                  <label>Image upload</label>
+
+                  {% if data.image %}
+                 
+                  <input type="hidden" value="no" name="image_change" id="image_change">
+                  <div class="input-group col-xs-12" id="image_present">
+                  <!-- Edit button with icon -->
+                  
+                    <img src="{{ data.image.url }}" alt="{{ data.auther_name}}" width="200" height="200"> 
+                    <button type="button" class="btn btn-success btn-sm" onclick="delete_imagee('{{data.id}}')">
+                      <i class="mdi mdi-pencil"></i> Delete
+                    </button> 
+           
+                  </div>
+                  {% endif %}
+                  
+                  <input type="file" name="product_image" class="file-upload-default">
+                  <div class="input-group col-xs-12" id="image_not_present" {% if data.image %} style="display:none; {% endif %}">
+                    <input type="text" id="fileinputetxt" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                    <span class="input-group-append">
+                      <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                    </span>
+                  </div>
+
+                </div>
+                <script>
+                    $('.file-upload-default').on('change',function(){
+                      $('#fileinputetxt').val($(this).val().replace(/C:\\fakepath\\/i, ''))
+                    })
+                </script>
+
+                <!-- {% if data.image %}
+                  <div class="input-group col-xs-12" id="image_present"> -->
+                  <!-- Edit button with icon -->
+                    <!-- <img src="{{data.image.url}}" alt="" width="100%" height="200px">
+                    <button type="button" class="btn btn-success btn-sm" onclick="edit_product_image()">
+                      <i class="mdi mdi-pencil"></i>delete
+                    </button>
+                  </div>
+                  {% endif %}
+                  <input type="file" name="product_image" class="file-upload-default" style="display: none;">
+                  <div class="input-group col-xs-12" id="image_not_present" {% if data.image %} style="display:none; {% endif %}">
+                    <input type="text" id="fileinputetxt" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                    <span class="input-group-append">
+                      <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                    </span>
+                  </div> -->
+
+                  <!-- <script>
+                    $('.file-upload-default').on('change',function(){
+                      $('#fileinputetxt').val($(this).val().replace(/C:\\fakepath\\/i, ''))
+                    })
+                  </script> -->
+                
+                <!-- {% if data.image %}
+                  <td class="py-3">
+                    <img src="{{ data.image.url }}" alt="{{ data.auther_name}}" width="300" height="300">  -->
+                    <!-- <img src="" alt="image"/> -->
+                  <!-- </td>
+                  <button type="button" class="btn btn-danger btn-sm" onclick="delete_imagee('{{data.id}}')">
+                    <a href="" style="color:white;"><i class="fas fa-trash-alt"></i> Delete</a>
+                  </button>
+                {% else %}
+                  <td class="py-3">
+                    <input type="file" name="product_image" class="file-upload-default">
+                    <div class="input-group col-xs-12" id="image_not_present"  style="display:none;">
+                      <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                      <span class="input-group-append">
+                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                      </span>
+                    </div>
+                  </td>
+                {% endif %} -->
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="edit_action()">Save changes</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<script src="{% static 'dashboard/js/file-upload.js' %}"></script>
+<script src="{% static 'admin/custom/custom.js' %}"></script>

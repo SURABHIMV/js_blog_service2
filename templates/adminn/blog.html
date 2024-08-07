@@ -1,0 +1,239 @@
+
+{% extends 'adminn/base.html' %}
+{% load static %}
+{% block content %}
+
+ <style>
+    .star-rating {
+  display: inline-block;
+  font-size: 88888; /* Remove the white space between inline-block elements */
+}
+
+/* Individual star styles */
+.star {
+  display: inline-block;
+  margin: 0 2px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #ccc; /* Default star color */
+}
+
+/* Selected (filled) star */
+.selected {
+  color: #ffcc00; /* Selected star color */
+}
+</style>
+
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="card-title">Blog</h4>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Create</button>
+          </div>
+          <div class="table-responsive">
+          <form action="" method="post" >
+            {% csrf_token %}
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                <th>
+                   Sl.no.
+                  </th>
+                  <th>
+                    Author Name
+                  </th>
+                  <th>
+                    Date
+                  </th>
+                  <th>
+                    Image
+                  </th>
+                  <th>
+                    Title
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                  <th>
+                    Status
+                  </th>
+                  <th>
+                    action
+                  </th> 
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in data %}
+                  <tr>
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+                     
+                    <td>
+                      {{i.auther_name}}
+                    </td>
+
+                    <td>
+                      {{ i.date|date:"d/m/Y" }}
+                    </td>
+                    {% if i.image %}
+                      <td class="py-3">
+                          <img src="{{ i.image.url }}" alt="{{ i.auther_name}}"> 
+                          <!-- <img src="" alt="image"/> -->
+                      </td>
+                    {% else %}
+                      <td class="py-3">
+                        <p>no image</p>
+                      </td>
+                    {% endif %}
+              
+                    <td>
+                        {{i.title}}
+                    </td>
+                    <td> 
+                    <!-- Button trigger modal -->
+
+                    <button type="button" class="btn btn-info btn-sm" onclick="description_data('{{i.id}}')">
+                      <i class="mdi mdi-pencil"></i>view
+                    </button>
+                    <!-- {{i.description}} -->
+                    </td>
+                    <td>
+                      <input type="hidden" name="blog_id" value="{{ i.id }}">
+                      <input type="checkbox" id="{{ i.id }}" onclick='handleClick(this);' {% if i.status %} checked {% else %} {% endif %}>
+                      <!-- <input type="checkbox" id="status" name="status" onclick="check('{{i.id}}')"> -->
+                      <!-- <button type="submit" class="btn btn-primary btn-sm">submit</button> -->
+                    </td>
+                    <td>
+                      <!-- Edit button with icon -->
+                      <button type="button" class="btn btn-success btn-sm" onclick="edit_blog('{{i.id}}')">
+                        <i class="mdi mdi-pencil"></i> Edit
+                      </button>
+
+                      <!-- Delete button with icon -->
+                      <button type="button" class="btn btn-danger btn-sm" onclick="delete_submit('{{i.id}}')">
+                        <a href="" style="color:white;"><i class="fas fa-trash-alt"></i> Delete</a>
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal -->
+    <!-- based on the id this template modal is connected -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Create Blog</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="" method="post" class="login-form" id="blog_form">
+            {% csrf_token %}
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="name">Author Name</label>
+                  
+                  <input type="text" name="auther_name" class="form-control" id="name" placeholder="auther Name">
+                </div>
+
+                <div class="form-group">
+                  <label for="name">Date</label>
+                  <input type="date" name="date" class="form-control" id="date" placeholder="date">
+                </div>
+
+                <div class="form-group">
+                  <label for="name">title</label>
+                  <input type="text" name="title" class="form-control" id="title" placeholder="title">
+                </div>
+
+                <div class="form-group">
+                  <label for="name">description</label>
+                  <input type="text" name="description" class="form-control" id="description" placeholder="description">
+                </div>
+
+                <div class="form-group">
+                  <label>Image upload</label>
+                  <input type="file" name="image" class="file-upload-default">
+                  <div class="input-group col-xs-12">
+                    <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                    <span class="input-group-append">
+                      <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" onclick="blog_submit()" class="btn btn-primary" >Save changes</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<div id="edit_blog_div2"></div>
+<div id="description_div2"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{% static 'admin/custom/custom.js' %}"></script>
+
+  <script>
+        function handleClick(checkbox) {
+          var productId = checkbox.getAttribute('id'); 
+          var url ="check-box";
+            $.ajax({
+            url: url,
+            data: {
+              'checked': checkbox.checked,
+              'productId': productId
+            },
+
+            success: function(data) {
+          
+            status = data['status']
+            message = data['message']
+            console.log('kkkkkkkkkkk',checkbox.id)
+            console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjj')
+            if (status == "success"){
+                var toastMixin = Swal.mixin({
+                toast: true,
+                icon: status,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+                });
+                toastMixin.fire({
+                animation: true,
+                title: message
+                });
+            }
+            
+        } 
+
+
+          });
+    }
+    </script>
+  
+{% endblock %}
+
+

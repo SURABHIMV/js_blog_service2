@@ -1,0 +1,31 @@
+
+{% extends 'adminn/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="row">
+    <div class="col-md-12 grid-margin">
+      <div class="row">
+        <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+          <h3 class="font-weight-bold">Welcome Admin</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 grid-margin transparent">
+    <div class="row">
+      <div class="col-md-4 mb-4 stretch-card transparent">
+        <a href="{% url 'Blog' %}" class="card-link">
+          <div class="card card-tale">
+            <div class="card-body">
+              <p class="mb-4">Total blogs</p>
+              <p class="fs-30 mb-2">{{ blog_count }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
