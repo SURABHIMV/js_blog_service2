@@ -55,18 +55,14 @@
                   
                   <input type="file" name="product_image" class="file-upload-default">
                   <div class="input-group col-xs-12" id="image_not_present" {% if data.image %} style="display:none; {% endif %}">
-                    <input type="text" id="fileinputetxt" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                    <input type="text" id='ffileinputetxt' class="form-control file-upload-info" disabled placeholder="Upload Image">
                     <span class="input-group-append">
                       <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                     </span>
                   </div>
 
                 </div>
-                <script>
-                    $('.file-upload-default').on('change',function(){
-                      $('#fileinputetxt').val($(this).val().replace(/C:\\fakepath\\/i, ''))
-                    })
-                </script>
+              
 
                 <!-- {% if data.image %}
                   <div class="input-group col-xs-12" id="image_present"> -->
@@ -114,7 +110,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" onclick="edit_action()">Save changes</button>
+                <button type="submit" class="btn btn-primary" onclick="edit_action()" data-dismiss="modal">Save changes</button>
               </div>
           </form>
         </div>
@@ -123,3 +119,9 @@
 
 <script src="{% static 'dashboard/js/file-upload.js' %}"></script>
 <script src="{% static 'admin/custom/custom.js' %}"></script>
+
+<script>
+  $('.file-upload-default').on('change',function(){
+    $('#ffileinputetxt').val($(this).val().replace(/C:\\fakepath\\/i, ''))
+  })
+</script>

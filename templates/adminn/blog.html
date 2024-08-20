@@ -32,9 +32,9 @@
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Create</button>
           </div>
           <div class="table-responsive">
-          <form action="" method="post" >
+          <form action="" method="post" id="blog_page">
             {% csrf_token %}
-            <table class="table table-striped">
+            <table class="table table-striped" id="blog-table">
               <thead>
                 <tr>
                 <th>
@@ -65,7 +65,7 @@
               </thead>
               <tbody>
                 {% for i in data %}
-                  <tr>
+                  <tr id="table{{i.id}}">
                     <td>
                         {{ forloop.counter }}
                     </td>
@@ -113,7 +113,7 @@
 
                       <!-- Delete button with icon -->
                       <button type="button" class="btn btn-danger btn-sm" onclick="delete_submit('{{i.id}}')">
-                        <a href="" style="color:white;"><i class="fas fa-trash-alt"></i> Delete</a>
+                        <a href="javascript:void(0)" style="color:white;"><i class="fas fa-trash-alt"></i> Delete</a>
                       </button>
                     </td>
                   </tr>
@@ -165,18 +165,20 @@
 
                 <div class="form-group">
                   <label>Image upload</label>
-                  <input type="file" name="image" class="file-upload-default">
-                  <div class="input-group col-xs-12">
-                    <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+
+                  <input type="file" name="image" class="file-upload-default">   
+                  <div class="input-group col-xs-12" id="image_not_present" {% if data.image %} style="display:none; {% endif %}">
+                    <input type="text" id='ss' class="form-control file-upload-info" disabled placeholder="Upload Image">
                     <span class="input-group-append">
                       <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                     </span>
                   </div>
+
                 </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" onclick="blog_submit()" class="btn btn-primary" >Save changes</button>
+                <button type="submit" onclick="blog_submit()" data-dismiss="modal" class="btn btn-primary" >Save changes</button>
               </div>
           </form>
         </div>
@@ -201,7 +203,6 @@
             },
 
             success: function(data) {
-          
             status = data['status']
             message = data['message']
             console.log('kkkkkkkkkkk',checkbox.id)
@@ -228,12 +229,18 @@
             }
             
         } 
-
-
           });
     }
     </script>
-  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is loaded -->
+<script>
+  $(document).ready(function(){
+    $('.file-upload-default').on('change', function(){
+      console.log('Image input changed')
+      $('#ss').val($(this).val().replace(/C:\\fakepath\\/i, ''))
+    });
+  });
+</script>
 {% endblock %}
 
 

@@ -1,0 +1,75 @@
+<table class="table table-striped" id="service-table">
+    <thead>
+      <tr>
+      <th>
+         Sl.no.
+        </th>
+        <th>
+          Title
+        </th>
+        <th>
+         Description
+        </th>
+        <th>
+          Image
+        </th>
+        
+        <th>
+          Status
+        </th>
+        <th>
+          action
+        </th> 
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in data %}
+        <tr id="stable{{i.id}}">
+          <td>
+              {{ forloop.counter }}
+          </td>
+           
+          <td>
+            {{i.title}}
+          </td>
+
+          <td> 
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-info btn-sm" onclick="service_description_data('{{i.id}}')">
+                <i class="mdi mdi-pencil"></i>view
+              </button>
+              <!-- {{i.description}} -->
+          </td>
+
+          {% if i.image %}
+            <td class="py-3">
+                <img src="{{ i.image.url }}" alt="{{ i.tile}}"> 
+                <!-- <img src="" alt="image"/> -->
+            </td>
+          {% else %}
+            <td class="py-3">
+              <p>no image</p>
+            </td>
+          {% endif %}
+    
+          <td>
+            <input type="hidden" name="service_id" value="{{ i.id }}">
+            <input type="checkbox" id="{{ i.id }}" onclick='shandleClick(this);' {% if i.status %} checked {% else %} {% endif %}>
+            <!-- <input type="checkbox" id="status" name="status" onclick="check('{{i.id}}')"> -->
+            <!-- <button type="submit" class="btn btn-primary btn-sm">submit</button> -->
+          </td>
+          <td>
+            <!-- Edit button with icon -->
+            <button type="button" class="btn btn-success btn-sm" onclick="edit_servicee('{{i.id}}')">
+              <i class="mdi mdi-pencil"></i> Edit
+            </button>
+
+            <!-- Delete button with icon -->
+            <button type="button" class="btn btn-danger btn-sm" onclick="service_delete_submit('{{i.id}}')">
+              <a href="#" style="color:white;"><i class="fas fa-trash-alt"></i> Delete</a>
+            </button>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
